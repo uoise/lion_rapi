@@ -1,10 +1,13 @@
 package com.ll.rapi.boundedContext.member.controller;
 
 import com.ll.rapi.boundedContext.member.service.MemberService;
+import jakarta.servlet.http.HttpServletResponse;
+import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -25,7 +28,11 @@ public class MemberController {
     }
 
     @PostMapping("/login")
-    public String login() {
-        return "성공";
+    public String login(@Valid @RequestBody LoginRequest loginRequest, HttpServletResponse resp) {
+        String accessToken = memberService.genAccessToken(loginRequest.getUsername(), loginRequest.getPassword());
+
+        resp.addHeader("Authentication", accessToken);
+
+        return "응답본문";
     }
 }
