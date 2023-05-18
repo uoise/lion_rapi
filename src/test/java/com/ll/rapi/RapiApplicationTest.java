@@ -52,7 +52,7 @@ class MemberControllerTest {
         resultActions
                 .andExpect(status().is2xxSuccessful())
                 .andExpect(jsonPath("$.resultCode").value("S-1"))
-                .andExpect(jsonPath("$.msg").value("엑세스 토큰이 생성되었습니다."))
+                .andExpect(jsonPath("$.msg").value("엑세스토큰이 생성되었습니다."))
                 .andExpect(jsonPath("$.data.accessToken").exists())
         ;
 
