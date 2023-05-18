@@ -15,9 +15,9 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.nio.charset.StandardCharsets;
 
-import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @SpringBootTest
@@ -48,15 +48,16 @@ class MemberControllerTest {
 
         // Then
         resultActions
-                .andExpect(status().is2xxSuccessful());
-
+                .andExpect(status().is2xxSuccessful())
+                .andExpect(jsonPath("$.resultCode").value("S-1"))
+                .andExpect(jsonPath("$.msg").value("엑세스 토큰이 생성되었습니다."))
+                .andExpect(jsonPath("$.data.accessToken").exists())
+        ;
 
         MvcResult mvcResult = resultActions.andReturn();
 
         MockHttpServletResponse response = mvcResult.getResponse();
 
-        String authentication = response.getHeader("Authentication");
 
-        assertThat(authentication).isNotEmpty();
     }
 }

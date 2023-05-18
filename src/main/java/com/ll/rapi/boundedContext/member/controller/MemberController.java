@@ -31,8 +31,16 @@ public class MemberController {
     public String login(@Valid @RequestBody LoginRequest loginRequest, HttpServletResponse resp) {
         String accessToken = memberService.genAccessToken(loginRequest.getUsername(), loginRequest.getPassword());
 
-        resp.addHeader("Authentication", accessToken);
-
-        return "응답본문";
+        return """
+                {
+                    "resultCode": "S-1",
+                    "msg": "엑세스 토큰이 생성되었습니다.",
+                    "data" : {
+                        "accessToken": "%s"
+                        }
+                }
+                """
+                .formatted(accessToken)
+                .stripIndent();
     }
 }
